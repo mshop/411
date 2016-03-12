@@ -2,10 +2,4 @@
 Collaborative Spotify Playlist
 
 
-Daniel Brown
-
-Michael Gajda
-
-Wendy Qian
-
-Molly Shopper
+Daniel Brown, Michael Gajda, Wendy Qian, and Molly Shopper
