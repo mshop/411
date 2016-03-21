@@ -11,12 +11,13 @@ router.get('/', function(req, res, next) {
   request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       // console.log(body) // Show the HTML for the Google homepage.
-      json_body = bodyParser.json(body)
-      console.log(body.type)
+      var json_body = JSON.parse(body)
+      console.log(json_body.tracks.items)
+      res.render('song', { tracks: json_body.tracks.items});
     }
   });
 
-  res.render('index', { title: req.query.q });
+
 });
 
 module.exports = router;
