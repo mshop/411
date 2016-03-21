@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/spotify_playlist');
+// mongoose.connect('mongodb://localhost/spotify_playlist');
 
 var Schema = mongoose.Schema;
 var person = new Schema({
@@ -20,14 +20,14 @@ router.get('/', function(req, res, next) {
 
 router.post('/db', function(req, res, next) {
   var person = new people(req.body);
-  person.save(function (err) {
-    if (err) {
-      console.log('error!');
-    }
-    else {
-      res.json({message: 'all is well'});
-    }
-  });
+  // person.save(function (err) {
+  //   if (err) {
+  //     console.log('error!');
+  //   }
+  //   else {
+  //     res.json({message: 'all is well'});
+  //   }
+  // });
 });
 
 router.get('/db', function(req, res, next) {
