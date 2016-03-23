@@ -27,12 +27,16 @@ router.post('/', function(req, res, next) {
             if (!error && response.statusCode == 200) {
                 // console.log(body) // Show the HTML for the Google homepage.
                 var json_body = JSON.parse(body)
-                if (json_body.tracks.total == 0){
-                    res.send('no results');
-                }
-                console.log(json_body.tracks.items)
+                    if (json_body.tracks.total != 0) {
+                        console.log(json_body.tracks.items)
 
-                res.render('song', {tracks: json_body.tracks.items});
+                        res.render('song', {tracks: json_body.tracks.items});
+                    }
+
+                    else{
+                        res.send('no results');
+                    }
+
 
             }
 
@@ -41,7 +45,7 @@ router.post('/', function(req, res, next) {
     }
     else{
         // no search has been given
-        res.render('song', {tracks: "None found"});
+        res.send('no results');
     }
 });
 
