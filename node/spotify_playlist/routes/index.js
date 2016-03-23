@@ -8,4 +8,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Spotify Queue' });
 });
 
+router.post('/songs', function (req, res) {
+  console.log(req.body.title);
+  res.send('Post page');
+});
 module.exports = router;
