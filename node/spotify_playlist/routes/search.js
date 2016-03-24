@@ -14,12 +14,14 @@ router.get('/', function(req, res, next) {
     // --> not implemented yet
     // results of possibly already made searches
     res.render('searches', { title: 'Spotify Queue' });
+
 });
+
 
 router.post('/', function(req, res, next) {
     console.log(req.body.song)
     if ((req.body.song != null) && ((req.body.song).length > 0))  {         // search field checks out
-        // var url = 'https://api.spotify.com/v1/search?q=' +"\"" +req.query.q +"\"" +"&type=track&market=US"; <-- for more "specific searches"
+
 
         var url = 'https://api.spotify.com/v1/search?q=' + req.body.song + "&type=track&market=US";
 

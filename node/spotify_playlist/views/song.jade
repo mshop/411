@@ -1,5 +1,16 @@
 extends layout
 
 block content
-  each track in tracks
-      p= track.name + " By: " + track.artists[0].name
+    div
+        table
+            tbody
+                each track in tracks
+                    tr
+                        td
+                            p= track.name + " By: " + track.artists[0].name
+                        td
+                            // this will laster be used to add the actual song into our queue
+                                // this will probably be in the form of http://localhost:3000/queue?= [track.id]
+                                // this url will be parsed, then we will do a lookup of the id on spotify and add the found song to the queue
+                            a(href="" + track.id) add this song to queue
+
