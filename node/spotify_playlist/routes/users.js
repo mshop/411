@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/spotify_playlist');
 
+//mongoose.connect('mongodb://localhost/spotify_playlist');
+
 var Schema = mongoose.Schema;
 var person = new Schema({
   name: String,
