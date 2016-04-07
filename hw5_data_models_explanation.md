@@ -4,18 +4,14 @@
 # Note on keys: We will be using the _id field as the key for this schema.
 #
 # Additional Note: A JSON Schema does not allow comments, so instead, a "description" field has been added that defines the attributes 
-#associated with the song object.
+#associated with the "Spotify search result" object.
 #
-
 
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Spotify search result",
-    "type": "array",
-    "items": {
-        "title": "Song",
-        "type": "object",
-        "properties": {
+    "type": "object",
+    "properties": {
             "search_href": {
 		     "description": "the link to the search that the song was included in",
                 "type": "string"  
@@ -47,7 +43,7 @@
 
 	},
         "required": ["_id", "id", "name", "duration_ms"]
-    }
+    
 }
 
 
