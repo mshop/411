@@ -1,8 +1,15 @@
 # This is our JSON schema for a Spotify search result, which we store to make our search function faster. 
-# All fields except duration_ms take (and expect) String values, because this is what is returned by Spotify itself
-# Note: A JSON Schema does not allow comments, so instead, a "description" field was added that defines the attributes associated with the song object
+# All fields except duration_ms take (and expect) String values, because this is what is returned by Spotify itself.
+#
+# Note on keys: We will be using the _id field as the key for this schema.
+#
+# Additional Note: A JSON Schema does not allow comments, so instead, a "description" field has been added that defines the attributes 
+#associated with the song object.
+#
+
 
 {
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Spotify search result",
     "type": "array",
     "items": {
@@ -35,11 +42,12 @@
             },
             "_id": {
                 "description": "The mongo unique string identifier for the document",
-                "type": "number"
+                "type": "string"
             }
 
 	},
-        "required": ["id", "name", "price"]
+        "required": ["_id", "id", "name", "duration_ms"]
     }
 }
+
 
