@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .page-header
+    h3 Search Spotify
+
+  div.searchContainer(ng-app="searchApp")
+    div.searchController(ng-controller="searchController")
+      form.form-horizontal
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label(class='col-sm-2 control-label', for='query') Query
+          .col-sm-8
+            input.form-control(type='text', name='query', id='query', ng-model="query", autofocus=true)
+            button.btn.btn-primary(ng-click="getSongs()") Search
+            | <div> {{ tracks }} </div>
