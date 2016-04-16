@@ -35,6 +35,8 @@ var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var searchController = require('./controllers/search');
 
+var partyController = require('./controllers/party');
+
 /**
  * API keys and Passport configuration.
  */
@@ -127,6 +129,17 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 app.get('/search', searchController.getSearch);
+
+app.get('/party', partyController.makeParty);
+
+// just added this as a test:
+/*
+app.get('/dowork',function(res,req){
+  console.log(req.params);
+  ///... code to do your work .../
+});
+*/
+
 /**
  * API examples routes.
  */

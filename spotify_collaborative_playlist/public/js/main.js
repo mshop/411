@@ -22,6 +22,20 @@ app.controller('searchController', function($scope, $http) {
         }
     });
 
+    $scope.addSong = function(trackid){
+
+            console.log(trackid);
+            console.log("it worked!");
+           // $scope.$broadcast("myEvent", trackid );
+           // $window.location.href = '/signin';  -- for redirect
+        /*
+            $http.get('http://localhost:3000/dowork',{params:{"param1": trackid }}).success(function(data){
+                console.log("yay");
+
+            });
+        */
+    };
+
     // $scope.getResutls = function () {
     //     var request = {
     //         method: 'post',

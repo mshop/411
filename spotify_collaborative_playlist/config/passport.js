@@ -14,6 +14,9 @@ var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
 var User = require('../models/User');
 
+// For spotify api, look into using this:
+// https://github.com/JMPerez/passport-spotify
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });

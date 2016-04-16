@@ -14,5 +14,16 @@ block content
             input.form-control(type='text', name='query', id='query', ng-model="query", autofocus=true)
             button.btn.btn-primary(ng-click="getSongs()") Search
             div.results
-            | <li ng-repeat="track in tracks"> {{ track.name }} by {{ track.artists}} </li>
+              <table>
+              <tr ng-repeat="track in tracks">
+              <td>{{ track.name }} by {{ track.artists}} </td>
+              //<td> <a href= "" + {{ track.id}} > add this song to queue</a>  </td>
+              <td>
+              // now have to create a page/ function that will show party queue for this to work
+              // instead of track.id; might want to send the whole object!
+              button.btn.btn-primary(ng-click="addSong(track.id)") add this song to queue
+
+              </td>
+              </tr>
+              </table>
 
