@@ -17,6 +17,7 @@ block content
           .col-sm-8
             input.form-control(type='text', name='query', id='query', ng-model="query", autofocus=true)
             input(ng-model="csrf_token" type='hidden', name='_csrf', value=_csrf)
+            | <input ng-model="partyid" type='hidden' name='partyid' value=#{ partyid }>
             button.btn.btn-primary(ng-click="getSongs()") Search
             div.results
               <table>
@@ -26,7 +27,7 @@ block content
               <td>
               // now have to create a page/ function that will show party queue for this to work
               // instead of track.id; might want to send the whole object!
-              button.btn.btn-primary(ng-click="addSong( {{ track.id }} , #{ partyid })") add this song to queue
+              <button class="btn btn-primary" ng-click="addSong(track.id)"> add this song to queue</button>
 
               </td>
               </tr>

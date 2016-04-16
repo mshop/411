@@ -22,20 +22,12 @@ app.controller('searchController', function($scope, $http) {
         }
     });
 
-    $scope.addSong = function(trackid, partyid) {
-        alert(trackid);
+    $scope.addSong = function(trackid) {
 
-        console.log(trackid);
-        console.log(partyid);
+        console.log('/party/' + $scope.partyid + '/' + trackid);
 
-        alert(trackid);
+        $http.post('/party/' + partyid + '/' + trackid);
 
-        $http.post('/party/' + partyid + '/' + trackid).success(function (data, status) {
-            confirm(trackid);
-            http.get('/party/' + partyid).success(function (data, status) {
-                $scope.partysongs = data.song_ids;
-            });
-        });
         console.log("it worked!");
     };
 
