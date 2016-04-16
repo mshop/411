@@ -22,10 +22,22 @@ app.controller('searchController', function($scope, $http) {
         }
     });
 
-    $scope.addSong = function(trackid){
+    $scope.addSong = function(trackid, partyid) {
+        alert(trackid);
 
-            console.log(trackid);
-            console.log("it worked!");
+        console.log(trackid);
+        console.log(partyid);
+
+        alert(trackid);
+
+        $http.post('/party/' + partyid + '/' + trackid).success(function (data, status) {
+            confirm(trackid);
+            http.get('/party/' + partyid).success(function (data, status) {
+                $scope.partysongs = data.song_ids;
+            });
+        });
+        console.log("it worked!");
+    };
 
            // $scope.$broadcast("myEvent", trackid );
            // $window.location.href = '/signin';  -- for redirect
@@ -36,7 +48,6 @@ app.controller('searchController', function($scope, $http) {
             });
 
         */
-    };
 
     // $scope.getResutls = function () {
     //     var request = {

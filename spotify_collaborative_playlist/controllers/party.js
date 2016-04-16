@@ -19,7 +19,7 @@ exports.postParty = function(req, res) {
       if (err) return console.error(err);
       console.log(result);
       //res.redirect('/');
-      res.redirect('/party/' + result._id);
+      res.redirect('/viewparty/' + result._id);
 
       //mongoose.disconnect();  --> might need to add callback function; as this could cause too many connections
       // to be open at mongo at once...
@@ -33,13 +33,30 @@ exports.postParty = function(req, res) {
   }
 };
 
-exports.getParty = function (req, res) {
+exports.postPartySong = function (req, res) {
+  Party.findOne({ "_id" : req.param("partyid") }, function (err, party){
+    party.song_ids.push(req.param("songid"));
+    console.log(party.song_ids);
+    party.save();
+  });
+  res.end();
+};
 
-  Party.find({"_id": req.param("partyid")}, function(err, results) {
+exports.getParty = function (req, res) {
+  Party.findOne({ "_id" : req.param("partyid") }, function (err, party){
+    console.log("I'm here");
+    console.log(party.song_ids);
+    res.send(party.song_ids);
+  });
+};
+
+exports.getPartyView = function (req, res) {
+
+  Party.findOne({"_id": req.param("partyid")}, function(err, result) {
     if (err) res.render('party', {partyid: "Party Not Found"})
     else {
-        res.render('party', {partyid: req.param("partyid")});}
-
-    });
+      res.render('party', {partyid: req.param("partyid")})
+    }
+  });
 };
 
