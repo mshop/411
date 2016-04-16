@@ -22,13 +22,15 @@ app.controller('searchController', function($scope, $http) {
         }
     });
 
-    $scope.addSong = function(trackid) {
+    $scope.addSong = function(trackid, partyid) {
 
-        console.log('/party/' + $scope.partyid + '/' + trackid);
+        console.log('/party/' + partyid + '/' + trackid);
 
-        $http.post('/party/' + partyid + '/' + trackid);
-
-        console.log("it worked!");
+        $http.post('/party/' + partyid + '/' + trackid).success(function (data, status) {
+            $http.get('/party/' + partyid).success(function (data, status) {
+                $scope.partysongs = data;
+            });
+        });
     };
 
            // $scope.$broadcast("myEvent", trackid );
