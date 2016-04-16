@@ -32,3 +32,7 @@ exports.makeParty = function(req, res) {
   }
 };
 
+exports.getParty = function (req, res) {
+  res.render('home');
+});
+

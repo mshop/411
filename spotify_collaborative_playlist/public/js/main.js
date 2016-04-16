@@ -26,6 +26,7 @@ app.controller('searchController', function($scope, $http) {
 
             console.log(trackid);
             console.log("it worked!");
+
            // $scope.$broadcast("myEvent", trackid );
            // $window.location.href = '/signin';  -- for redirect
         /*
@@ -33,6 +34,7 @@ app.controller('searchController', function($scope, $http) {
                 console.log("yay");
 
             });
+
         */
     };
 
