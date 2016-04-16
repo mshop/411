@@ -130,7 +130,9 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 
 app.get('/search', searchController.getSearch);
 
-app.get('/party', partyController.makeParty);
+app.post('/party', partyController.postParty);
+app.get('/party', partyController.getParty);
+app.get('/party/:partyid', partyController.getParty);
 
 // just added this as a test:
 /*

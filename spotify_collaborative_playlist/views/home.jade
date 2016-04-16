@@ -27,3 +27,11 @@ block content
               </tr>
               </table>
 
+
+    h3 Make New Party
+  form.form-horizontal(id='post-party', action='party/' method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    button.btn.btn-success(type='submit')
+      i.fa.fa-user-plus
+      | Create
+
