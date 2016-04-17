@@ -6,7 +6,11 @@ var SearchResult = require('../models/SearchResult');
  * Search form page.
  */
 
-exports.getSearch = function(req, res) {
+exports.getSearch = function (req, res) {
+  res.render('search');
+};
+
+exports.apiGetSearch = function(req, res) {
   if (req.user) {
     //return res.redirect('/');
 

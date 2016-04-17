@@ -85,15 +85,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-// app.use(function(req, res, next) {
-//   if (req.path === '/api/upload') {
-//     next();
-//   } else {
-//     lusca.csrf()(req, res, next);
-//   }
-// });
-// app.use(lusca.xframe('SAMEORIGIN'));
-// app.use(lusca.xssProtection(true));
+app.use(function(req, res, next) {
+  if (req.path === '/api/upload') {
+    next();
+  } else {
+    lusca.csrf({angular: true})(req, res, next);
+  }
+});
+app.use(lusca.xframe('SAMEORIGIN'));
+app.use(lusca.xssProtection(true));
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   next();
@@ -131,10 +131,15 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/search', searchController.getSearch);
 
 app.post('/party', partyController.postParty);
-app.get('/party', partyController.getParty);
-app.get('/viewparty/:partyid', partyController.getPartyView);
 app.get('/party/:partyid', partyController.getParty);
-app.post('/party/:partyid/:songid', partyController.postPartySong);
+app.post('/party/:partyid/:songid', partyController.postSong);
+//
+
+
+app.get('/api/party/:partyid', partyController.apiGetParty);
+
+app.get('/api/search', searchController.apiGetSearch);
+
 
 // just added this as a test:
 /*

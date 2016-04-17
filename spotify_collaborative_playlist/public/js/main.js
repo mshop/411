@@ -9,7 +9,7 @@ var app = angular.module('searchApp', []);
 app.controller('searchController', function($scope, $http) {
 
     $scope.getSongs = function() {
-        $http.get('/search?query=' + $scope.query).success(function (data, status) {
+        $http.get('/api/search?query=' + $scope.query).success(function (data, status) {
             $scope.tracks = data;
         }).error( function(data, status) {
             $scope.tracks = "Error";
@@ -27,8 +27,9 @@ app.controller('searchController', function($scope, $http) {
         console.log('/party/' + partyid + '/' + trackid);
 
         $http.post('/party/' + partyid + '/' + trackid).success(function (data, status) {
-            $http.get('/party/' + partyid).success(function (data, status) {
+            $http.get('/api/party/' + partyid).success(function (data, status) {
                 $scope.partysongs = data;
+                console.log(data);
             });
         });
     };

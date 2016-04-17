@@ -6,8 +6,6 @@ exports.postParty = function(req, res) {
   if (req.user) {
 
     // implement a check to see if user is already part of a party first (here)
-
-
     //then if not, create new party
     var result = new Party();
 
@@ -19,12 +17,11 @@ exports.postParty = function(req, res) {
       if (err) return console.error(err);
       console.log(result);
       //res.redirect('/');
-      res.redirect('/viewparty/' + result._id);
+      res.redirect('/party/' + result._id);
 
       //mongoose.disconnect();  --> might need to add callback function; as this could cause too many connections
       // to be open at mongo at once...
     });
-
   }
   else{
     res.render('account/login', {
@@ -33,30 +30,37 @@ exports.postParty = function(req, res) {
   }
 };
 
-exports.postPartySong = function (req, res) {
-  Party.findOne({ "_id" : req.param("partyid") }, function (err, party){
-    party.song_ids.push(req.param("songid"));
-    console.log(party.song_ids);
-    party.save();
+exports.getParty = function (req, res) {
+
+  Party.findOne({"_id": req.params.partyid}, function(err, result) {
+    if (err) res.render('party', {partyid: "Party Not Found"})
+    else {
+      res.render('party', {partyid: req.params.partyid})
+    }
+  });
+};
+
+exports.postSong = function (req, res) {
+  Party.findOne({ "_id" : req.params.partyid }, function (err, party){
+    if (party.song_ids.indexOf(req.params.songid) > -1) {
+      console.log('Song already in queue');
+    }
+    else {
+      party.song_ids.push(req.params.songid);
+      console.log(party.song_ids);
+      party.save();
+    }
   });
   res.end();
 };
 
-exports.getParty = function (req, res) {
-  Party.findOne({ "_id" : req.param("partyid") }, function (err, party){
+exports.apiGetParty = function (req, res) {
+  Party.findOne({ "_id" : req.params.partyid }, function (err, party){
     console.log("I'm here");
     console.log(party.song_ids);
     res.send(party.song_ids);
   });
 };
 
-exports.getPartyView = function (req, res) {
 
-  Party.findOne({"_id": req.param("partyid")}, function(err, result) {
-    if (err) res.render('party', {partyid: "Party Not Found"})
-    else {
-      res.render('party', {partyid: req.param("partyid")})
-    }
-  });
-};
 
