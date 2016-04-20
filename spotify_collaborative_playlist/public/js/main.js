@@ -43,7 +43,7 @@ app.controller('searchController', function($scope, $http) {
         //console.log('/party/' + partyid + '/' + trackid);
         //console.log("VOTE UP");
 
-        $http.get('/party/' + partyid + '/' + trackid+ '/' + '1').success(function (data, status) {
+        $http.post('/api/party/' + partyid + '/' + trackid+ '/' + 'up').success(function (data, status) {
                 $scope.partysongs = data;
                 //console.log(data);
 
@@ -56,7 +56,7 @@ app.controller('searchController', function($scope, $http) {
         //console.log('/party/' + partyid + '/' + trackid);
        // console.log("VOTE DOWN");
 
-        $http.get('/party/' + partyid + '/' + trackid+ '/' + '-1').success(function (data, status) {
+        $http.post('/api/party/' + partyid + '/' + trackid+ '/' + 'down').success(function (data, status) {
             $scope.partysongs = data;
             //console.log(data);
 
