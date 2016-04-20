@@ -34,7 +34,12 @@ exports.postParty = function(req, res) {
 exports.getParty = function (req, res) {
 
   Party.findOne({"_id": req.params.partyid}, function(err, party) {
-    if (err) res.render('party', {partyid: "Party Not Found"})
+    if (err) {
+        res.render('party', {partyid: "Party Not Found"}) //--> this displays the search function: aka-- not good
+      // it may just be a better idea to create a separate view that displays "party not found", then offers a button to go back to home page.
+      //res.render("Party Not Found"); then -> res.redirect('/');
+      //   **OR:  separate search and party into two different views, and then just display each one when we want.
+    }
     else {
       res.render('party', {partyid: req.params.partyid });
       // we should probably try to make the party results (the queue) into a view then just display the view via render;
