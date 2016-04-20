@@ -50,58 +50,90 @@ exports.getParty = function (req, res) {
 // But at least the fields do get updated...
 
 // Vote up song
-exports.VUpSong = function (req, res) {
-  console.log(req.params.partyid);
-  console.log(req.params.songid);
+// exports.VUpSong = function (req, res) {
+//   console.log(req.params.partyid);
+//   console.log(req.params.songid);
+//
+//   Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, result) {
+//     if (err) res.render('party', {partyid: "Party or Song Not Found"})
+//     else {
+//      // res.render('party', {partyid: req.params.partyid })
+//       result.song_ids[0].votes++;
+//       //console.log(result.song_ids);
+//       result.save(function (err, result) {
+//         if (err) return console.error(err);
+//         else {
+//           console.log("VOTE Up SUCCESS");
+//           //mongoose.connection.close();
+//           res.status(200).end();
+//         }
+//       });
+//
+//     }
+//     //mongoose.connection.close();
+//   });
+//  // res.redirect('/party/' + req.params.partyid);
+//
+// };
+//
+//
+// // Vote down song
+// exports.VDownSong = function (req, res) {
+//   console.log(req.params.partyid);
+//   console.log(req.params.songid);
+//
+//   Party.findOne({ "_id" : req.params.partyid}, function (err, result) {
+//     if (err) {
+//       res.render('party', {partyid: "Party or Song Not Found"});
+//     }
+//     else {
+//       // res.render('party', {partyid: req.params.partyid })
+//       result.song_ids[0].votes--;
+//       console.log(result.song_ids);
+//       //console.log(result.song_ids);
+//       result.save(function (err, result) {
+//         if (err) {
+//           console.log("VOTE Down Error");
+//           res.status(404).end();
+//         }
+//         else {
+//           console.log("VOTE Down SUCCESS");
+//           //mongoose.connection.close();
+//           res.status(200).end();
+//         }
+//       });
+//
+//     }
+//     //mongoose.connection.close();
+//   });
+//  // res.redirect('/party/' + req.params.partyid);
+// };
 
-  Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, res) {
-    if (err) res.render('party', {partyid: "Party or Song Not Found"})
-    else {
-     // res.render('party', {partyid: req.params.partyid })
-      res.song_ids[0].votes++;
-      //console.log(result.song_ids);
-      res.save(function (err, result) {
-        if (err) return console.error(err);
-        else {
-          console.log("VOTE Up SUCCESS");
-          //mongoose.connection.close();
+exports.apiVoteSong = function(req, res) {
+  // Party.findOne({ "_id" : req.params.partyid }, function (err, party){
+  //   console.log(party.song_ids[party.song_ids.indexOf(req.params.songid)]);
+  //   res.send(party.song_ids);
+  // });
+  Party.findOne({ "_id" : req.params.partyid }, function (err, party){
+    console.log(party.song_ids);
+
+    for (i = 0; i < party.song_ids.length; i++) {
+      if (party.song_ids[i].songid == req.params.songid) {
+        if (req.params.vote == "down") {
+          if (party.song_ids[i].votes > 0) {
+            party.song_ids[i].votes--;
+            party.save();
+          }
         }
-        mongoose.connection.close();
-      });
-
-    }
-    //mongoose.connection.close();
-  });
- // res.redirect('/party/' + req.params.partyid);
-
-};
-
-
-// Vote down song
-exports.VDownSong = function (req, res) {
-  console.log(req.params.partyid);
-  console.log(req.params.songid);
-
-  Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, res) {
-    if (err) res.render('party', {partyid: "Party or Song Not Found"})
-    else {
-      // res.render('party', {partyid: req.params.partyid })
-      res.song_ids[0].votes--;
-      //console.log(result.song_ids);
-      res.save(function (err, result) {
-        if (err) return console.error(err);
-        else {
-          console.log("VOTE Down SUCCESS");
-          //mongoose.connection.close();
+        else if (req.params.vote == "up") {
+          party.song_ids[i].votes++;
+          party.save();
         }
-        mongoose.connection.close();
-      });
-
+      }
     }
-    //mongoose.connection.close();
+    console.log(party.song_ids);
+    res.send(party.song_ids);
   });
- // res.redirect('/party/' + req.params.partyid);
-
 };
 
 
