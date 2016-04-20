@@ -4,12 +4,9 @@ block content
   .page-header
     h3 Party ID: #{ partyid }
 
-
-
   div.searchContainer(ng-app="searchApp")
 
     div.searchController(ng-controller="searchController")
-      <li ng-repeat="partysong in partysongs"> {{ partysong }}</li>
 
       form.form-horizontal
         .form-group
@@ -19,6 +16,8 @@ block content
             input(ng-model="csrf_token" type='hidden', name='_csrf', value=_csrf)
             button.btn.btn-primary(ng-click="getSongs()") Search
             div.results
+              <p>
+              </p>
               <table>
               <tr ng-repeat="track in tracks">
               <td>{{ track.name }} by {{ track.artists}} </td>
@@ -31,3 +30,21 @@ block content
               </td>
               </tr>
               </table>
+
+      <p>
+      </p>
+      <table>
+      <tr ng-repeat="partysong in partysongs">
+      <td>
+      <table>
+      <tr>
+      <td>{{ partysong.songid }} </td>
+      </tr>
+      <tr>
+      <td>
+      | <button class="btn btn-primary" ng-click="UpSong(partysong.songid, '#{ partyid }' )"> Vote up</button>
+      | <button class="btn btn-primary" ng-click="DownSong(partysong.songid, '#{ partyid }' )"> Vote down</button>
+      </td>
+      </tr>
+      </table>
+      </td>

@@ -35,21 +35,97 @@ exports.getParty = function (req, res) {
   Party.findOne({"_id": req.params.partyid}, function(err, result) {
     if (err) res.render('party', {partyid: "Party Not Found"})
     else {
-      res.render('party', {partyid: req.params.partyid})
+      res.render('party', {partyid: req.params.partyid })
+      console.log(result.song_ids);
+
     }
   });
 };
 
-exports.postSong = function (req, res) {
-  Party.findOne({ "_id" : req.params.partyid }, function (err, party){
-    if (party.song_ids.indexOf(req.params.songid) > -1) {
-      console.log('Song already in queue');
-    }
+// *** NOTE: MAY NEED TO CHANGE TO UPDATE FUNCTION INSTEAD (for upvote/downvote only)
+// See this: http://stackoverflow.com/questions/33640677/mongodb-update-upon-button-click
+
+// *ALSO:  for some reason, after clicking upvote/downvote, this hangs and causes a loop
+// of continuous voting up/down to happen (via gets); not sure how to fix at this current moment...
+// But at least the fields do get updated...
+
+// Vote up song
+exports.VUpSong = function (req, res) {
+  console.log(req.params.partyid);
+  console.log(req.params.songid);
+
+  Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, res) {
+    if (err) res.render('party', {partyid: "Party or Song Not Found"})
     else {
-      party.song_ids.push(req.params.songid);
-      console.log(party.song_ids);
-      party.save();
+     // res.render('party', {partyid: req.params.partyid })
+      res.song_ids[0].votes++;
+      //console.log(result.song_ids);
+      res.save(function (err, result) {
+        if (err) return console.error(err);
+        else {
+          console.log("VOTE Up SUCCESS");
+          //mongoose.connection.close();
+        }
+        mongoose.connection.close();
+      });
+
     }
+    //mongoose.connection.close();
+  });
+ // res.redirect('/party/' + req.params.partyid);
+
+};
+
+
+// Vote down song
+exports.VDownSong = function (req, res) {
+  console.log(req.params.partyid);
+  console.log(req.params.songid);
+
+  Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, res) {
+    if (err) res.render('party', {partyid: "Party or Song Not Found"})
+    else {
+      // res.render('party', {partyid: req.params.partyid })
+      res.song_ids[0].votes--;
+      //console.log(result.song_ids);
+      res.save(function (err, result) {
+        if (err) return console.error(err);
+        else {
+          console.log("VOTE Down SUCCESS");
+          //mongoose.connection.close();
+        }
+        mongoose.connection.close();
+      });
+
+    }
+    //mongoose.connection.close();
+  });
+ // res.redirect('/party/' + req.params.partyid);
+
+};
+
+
+
+exports.postSong = function (req, res) {
+  Party.findOne({ "_id" : req.params.partyid}, function (err, party){
+    //console.log("party found:" + party);
+    // if we found the party (a null party shouldn't happen, but just in case);
+    if (party != null) {
+      // search if this party has the song already
+      Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, song) {
+        if (song != null) {       // we got some results, therefore song exists, so don't add it again!
+          console.log('Song already in queue');
+        }
+        else {
+          // song not found; so add it
+          party.song_ids.push({songid: req.params.songid, votes: 0});
+          //console.log(party.song_ids);
+          party.save();
+        }
+
+      });
+    }
+
   });
   res.end();
 };

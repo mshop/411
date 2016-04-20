@@ -133,8 +133,12 @@ app.get('/search', searchController.getSearch);
 app.post('/party', partyController.postParty);
 app.get('/party/:partyid', partyController.getParty);
 app.post('/party/:partyid/:songid', partyController.postSong);
-//
 
+// vote up
+app.get('/party/:partyid/:songid/1', partyController.VUpSong);
+
+// vote down
+app.get('/party/:partyid/:songid/-1', partyController.VDownSong);
 
 app.get('/api/party/:partyid', partyController.apiGetParty);
 

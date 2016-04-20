@@ -29,14 +29,16 @@ block content
   //            </table>
 
   h3 Find Party
+
   div.searchController(ng-controller="searchController")
     form.form-horizontal
-      input(type='hidden', name='_csrf', value=_csrf)
+      //input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label(class='col-sm-2 control-label', for='query') Party ID
         .col-sm-8
           input.form-control(type='text', name='query', id='query', ng-model="query", autofocus=true)
-
+          //button.btn.btn-primary(ng-click="attendParty('#{ query }')") Go to party
+         // <button class="btn btn-primary" ng-click="attendParty(id)"> Go to party</button>
   hr
 
   h3 Make New Party
