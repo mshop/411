@@ -30,13 +30,24 @@ exports.postParty = function(req, res) {
   }
 };
 
+
 exports.getParty = function (req, res) {
 
-  Party.findOne({"_id": req.params.partyid}, function(err, result) {
+  Party.findOne({"_id": req.params.partyid}, function(err, party) {
     if (err) res.render('party', {partyid: "Party Not Found"})
     else {
-      res.render('party', {partyid: req.params.partyid })
-      console.log(result.song_ids);
+      res.render('party', {partyid: req.params.partyid });
+      // we should probably try to make the party results (the queue) into a view then just display the view via render;
+      // otherwise, the only way to see the queue is by adding a song to it;
+      // if you refresh the page, the queue disappears
+      /*
+      party.song_ids.sort(function(a,b) {
+        return b.votes - a.votes;
+      });
+      res.send(party.song_ids);
+      */
+
+      console.log(party.song_ids);
 
     }
   });
@@ -44,70 +55,6 @@ exports.getParty = function (req, res) {
 
 // *** NOTE: MAY NEED TO CHANGE TO UPDATE FUNCTION INSTEAD (for upvote/downvote only)
 // See this: http://stackoverflow.com/questions/33640677/mongodb-update-upon-button-click
-
-// *ALSO:  for some reason, after clicking upvote/downvote, this hangs and causes a loop
-// of continuous voting up/down to happen (via gets); not sure how to fix at this current moment...
-// But at least the fields do get updated...
-
-// Vote up song
-// exports.VUpSong = function (req, res) {
-//   console.log(req.params.partyid);
-//   console.log(req.params.songid);
-//
-//   Party.findOne({ "_id" : req.params.partyid , "song_ids.songid" : req.params.songid}, function (err, result) {
-//     if (err) res.render('party', {partyid: "Party or Song Not Found"})
-//     else {
-//      // res.render('party', {partyid: req.params.partyid })
-//       result.song_ids[0].votes++;
-//       //console.log(result.song_ids);
-//       result.save(function (err, result) {
-//         if (err) return console.error(err);
-//         else {
-//           console.log("VOTE Up SUCCESS");
-//           //mongoose.connection.close();
-//           res.status(200).end();
-//         }
-//       });
-//
-//     }
-//     //mongoose.connection.close();
-//   });
-//  // res.redirect('/party/' + req.params.partyid);
-//
-// };
-//
-//
-// // Vote down song
-// exports.VDownSong = function (req, res) {
-//   console.log(req.params.partyid);
-//   console.log(req.params.songid);
-//
-//   Party.findOne({ "_id" : req.params.partyid}, function (err, result) {
-//     if (err) {
-//       res.render('party', {partyid: "Party or Song Not Found"});
-//     }
-//     else {
-//       // res.render('party', {partyid: req.params.partyid })
-//       result.song_ids[0].votes--;
-//       console.log(result.song_ids);
-//       //console.log(result.song_ids);
-//       result.save(function (err, result) {
-//         if (err) {
-//           console.log("VOTE Down Error");
-//           res.status(404).end();
-//         }
-//         else {
-//           console.log("VOTE Down SUCCESS");
-//           //mongoose.connection.close();
-//           res.status(200).end();
-//         }
-//       });
-//
-//     }
-//     //mongoose.connection.close();
-//   });
-//  // res.redirect('/party/' + req.params.partyid);
-// };
 
 exports.apiVoteSong = function(req, res) {
   // Party.findOne({ "_id" : req.params.partyid }, function (err, party){
@@ -132,6 +79,10 @@ exports.apiVoteSong = function(req, res) {
       }
     }
     console.log(party.song_ids);
+
+    party.song_ids.sort(function(a,b) {
+      return b.votes - a.votes;
+    });
     res.send(party.song_ids);
   });
 };
@@ -166,6 +117,10 @@ exports.apiGetParty = function (req, res) {
   Party.findOne({ "_id" : req.params.partyid }, function (err, party){
     console.log("I'm here");
     console.log(party.song_ids);
+
+    party.song_ids.sort(function(a,b) {
+      return b.votes - a.votes;
+    });
     res.send(party.song_ids);
   });
 };

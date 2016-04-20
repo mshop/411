@@ -146,7 +146,6 @@ app.get('/api/party/:partyid', partyController.apiGetParty);
 
 app.get('/api/search', searchController.apiGetSearch);
 
-
 // just added this as a test:
 /*
 app.get('/dowork',function(res,req){
