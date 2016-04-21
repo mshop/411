@@ -147,10 +147,9 @@ exports.apiVoteSong = function(req, res) {
     for (i = 0; i < party.song_ids.length; i++) {
       if (party.song_ids[i].songid == req.params.songid) {
         if (req.params.vote == "down") {
-          if (party.song_ids[i].votes > 0) {
             party.song_ids[i].votes--;
             party.save();
-          }
+
         }
         else if (req.params.vote == "up") {
           party.song_ids[i].votes++;
