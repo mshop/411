@@ -67,8 +67,7 @@ app.controller('searchController', function($scope, $http) {
     // ** Bug: **
     // ** attendParty currently does not get called for some reason!
     $scope.attendParty = function(query) {
-        //$event.preventDefault();
-        console.log("PARTY!");
+
         console.log("query" + query);
         /*
         $http.post('/party/' + partyid + '/' + trackid).success(function (data, status) {
@@ -78,7 +77,7 @@ app.controller('searchController', function($scope, $http) {
             });
         });
         */
-        //res.redirect('/party/' + query);
+        res.redirect('/party/' + query);
     };
 
 
