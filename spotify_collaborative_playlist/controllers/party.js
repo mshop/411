@@ -124,6 +124,18 @@ exports.getParty = function (req, res) {
 //  // res.redirect('/party/' + req.params.partyid);
 // };
 
+function CompareSongs(a,b) {
+  if (a.votes > b.votes) {
+    return -1;
+  }
+  else if (a.votes < b.votes) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 exports.apiVoteSong = function(req, res) {
   // Party.findOne({ "_id" : req.params.partyid }, function (err, party){
   //   console.log(party.song_ids[party.song_ids.indexOf(req.params.songid)]);
@@ -147,7 +159,7 @@ exports.apiVoteSong = function(req, res) {
       }
     }
     console.log(party.song_ids);
-    res.send(party.song_ids);
+    res.send(party.song_ids.sort(CompareSongs));
   });
 };
 
@@ -181,7 +193,7 @@ exports.apiGetParty = function (req, res) {
   Party.findOne({ "_id" : req.params.partyid }, function (err, party){
     console.log("I'm here");
     console.log(party.song_ids);
-    res.send(party.song_ids);
+    res.send(party.song_ids.sort(CompareSongs));
   });
 };
 
