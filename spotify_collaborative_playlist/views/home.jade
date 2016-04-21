@@ -36,9 +36,15 @@ block content
       .form-group
         label(class='col-sm-2 control-label') Party ID
         .col-sm-8
+<<<<<<< HEAD
           input.form-control(type='text', placeholder='Enter in Party ID', name = 'id')
          // button.btn.btn-primary(ng-click="attendParty('#{ query }')") Go to party
          // <button class="btn btn-primary" ng-click="attendParty(id)"> Go to party</button>
+=======
+          input.form-control(type='text', name='query', id='query', ng-model="query", autofocus=true)
+          button.btn.btn-primary(ng-click="attendParty()") Find party
+
+>>>>>>> origin/voting1
   hr
 
   h3 Make New Party
