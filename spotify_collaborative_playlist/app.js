@@ -37,6 +37,8 @@ var searchController = require('./controllers/search');
 
 var partyController = require('./controllers/party');
 
+var songController = require('./controllers/song');
+
 /**
  * API keys and Passport configuration.
  */
@@ -145,6 +147,8 @@ app.post('/api/party/:partyid/:songid/:vote', partyController.apiVoteSong);
 app.get('/api/party/:partyid', partyController.apiGetParty);
 
 app.get('/api/search', searchController.apiGetSearch);
+
+app.get('/api/song/:songid', songController.apiGetSong);
 
 
 // just added this as a test:

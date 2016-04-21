@@ -1,6 +1,7 @@
 var request = require('request');
 var mongoose = require('mongoose');
 var Party = require('../models/Party');
+var SearchResult = require('../models/SearchResult');
 
 exports.postParty = function(req, res) {
   if (req.user) {
@@ -176,9 +177,11 @@ exports.postSong = function (req, res) {
         }
         else {
           // song not found; so add it
-          party.song_ids.push({songid: req.params.songid, votes: 0});
-          //console.log(party.song_ids);
-          party.save();
+          SearchResult.find({"id": req.params.songid}, function (err, result) {
+            party.song_ids.push({songid: req.params.songid, votes: 0, name: result[0].name, artists: result[0].artists});
+            party.save();
+          });
+
         }
 
       });
