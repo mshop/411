@@ -3,6 +3,7 @@ extends layout
 block content
   .page-header
     h3 Party ID: #{ partyid }
+    img(src="https://api.qrserver.com/v1/create-qr-code/?data=" + partyid + "&amp;size=100x100" alt="" title="")
 
   div.searchContainer(ng-app="searchApp")
 

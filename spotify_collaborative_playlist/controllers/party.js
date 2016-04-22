@@ -14,9 +14,13 @@ exports.postParty = function(req, res) {
     result.user_ids.push(req.user.tokens[0].accessToken);
     result.host_id = req.user.id;
 
+
+
     result.save(function (err, result) {
       if (err) return console.error(err);
       console.log(result);
+      var url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result._id;
+      console.log(url);
       //res.redirect('/');
       res.redirect('/party/' + result._id);
 
