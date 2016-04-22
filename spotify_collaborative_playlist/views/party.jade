@@ -16,7 +16,7 @@ block content
               .col-sm-8
                 input.form-control(type='text', name='query', id='query', ng-model="query", autofocus=true)
                 input(ng-model="csrf_token" type='hidden', name='_csrf', value=_csrf)
-                button.btn.btn-primary(ng-click="getSongs()") Search
+                button.btn.btn-success(ng-click="getSongs()") Search
                 div.results
                   <p>
                   </p>
@@ -27,7 +27,7 @@ block content
                   <td>
                   // now have to create a page/ function that will show party queue for this to work
                   // instead of track.id; might want to send the whole object!
-                  |<button class="btn btn-primary" ng-click="addSong(track.id, '#{ partyid }' )">+</button>
+                  |<button class="btn btn-success" ng-click="addSong(track.id, '#{ partyid }' )">+</button>
 
                   </td>
                   </tr>
@@ -42,8 +42,8 @@ block content
           </tr>
           <tr>
           <td>
-          | <button class="btn btn-primary" ng-click="UpSong(partysong.songid, '#{ partyid }' )"> Vote up</button>
-          | <button class="btn btn-primary" ng-click="DownSong(partysong.songid, '#{ partyid }' )"> Vote down</button>
+          | <button class="btn btn-success" ng-click="UpSong(partysong.songid, '#{ partyid }' )"> Vote up</button>
+          | <button class="btn btn-success" ng-click="DownSong(partysong.songid, '#{ partyid }' )"> Vote down</button>
           </td>
           </tr>
           </table>
