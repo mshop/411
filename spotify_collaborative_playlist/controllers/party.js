@@ -37,6 +37,10 @@ exports.postParty = function(req, res) {
 
 exports.getParty = function (req, res) {
 
+  if (req.params.partyid == null) {
+    res.redirect('home');
+  }
+
   Party.findOne({"_id": req.params.partyid}, function(err, party) {
     if (err) {
       res.render('party', {partyid: "Party Not Found"}) //--> this displays the search function: aka-- not good

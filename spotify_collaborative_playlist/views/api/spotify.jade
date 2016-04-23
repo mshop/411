@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-spotify
+      | Spotify API
+  div.playlistContainer
+    for playlist in playlists
+      li #{playlist.name}
