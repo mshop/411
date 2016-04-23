@@ -196,6 +196,8 @@ app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 app.get('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
 app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
 
+app.get('/api/spotify', passportConfig.isAuthenticated, passportConfig.isAuthorized);
+
 /**
  * OAuth authentication routes. (Sign in)
  */
@@ -224,6 +226,10 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
   res.redirect(req.session.returnTo || '/');
 });
 
+app.get('/auth/spotify', passport.authenticate('spotify', { state: 'SOME STATE' }));
+app.get('/auth/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req, res) {
+  res.redirect(req.session.returnTo || '/');
+});
 /**
  * OAuth authorization routes. (API examples)
  */

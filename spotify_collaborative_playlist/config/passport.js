@@ -6,11 +6,14 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
+
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var OpenIDStrategy = require('passport-openid').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+
+var SpotifyStrategy = require('passport-spotify').Strategy;
 
 var User = require('../models/User');
 
@@ -525,3 +528,23 @@ exports.isAuthorized = function(req, res, next) {
     res.redirect('/auth/' + provider);
   }
 };
+
+
+/**
+ * Spotify Login
+ */
+
+passport.use(new SpotifyStrategy({
+      clientID: process.env.SPOTIFY_ID,
+      clientSecret: process.env.SPOTIFY_SECRET,
+      callbackURL: "/auth/spotify/callback"
+    },
+    function(req, accessToken, refreshToken, profile, done) {
+      User.findById(req.user._id, function(err, user) {
+        user.tokens.push({ kind: 'spotify', accessToken: accessToken });
+        user.save(function(err) {
+          done(err, user);
+        });
+      });
+    }
+));
