@@ -11,7 +11,6 @@ exports.getSearch = function (req, res) {
 };
 
 exports.apiGetSearch = function(req, res) {
-  if (req.user) {
     //return res.redirect('/');
 
     req.assert('query', 'Search query cannot be blank').notEmpty();
@@ -74,12 +73,5 @@ exports.apiGetSearch = function(req, res) {
       }
     });
 
-
-  }
-  else{
-    res.render('account/login', {
-      title: 'Login'
-    });
-  }
 };
 
