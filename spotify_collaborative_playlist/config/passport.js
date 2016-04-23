@@ -534,20 +534,68 @@ exports.isAuthorized = function(req, res, next) {
  * Spotify Login
  */
 
-passport.use('spotify', new OAuth2Strategy ({
-      authorizationURL: 'https://accounts.spotify.com/authorize',
-      tokenURL: 'https://accounts.spotify.com/api/token',
-      clientID: process.env.SPOTIFY_ID,
-      clientSecret: process.env.SPOTIFY_SECRET,
-      callbackURL: "/auth/spotify/callback",
-      passReqToCallback: true
-    },
-    function(req, accessToken, refreshToken, profile, done) {
-      User.findById(req.user._id, function(err, user) {
-        user.tokens.push({ kind: 'spotify', accessToken: accessToken });
-        user.save(function(err) {
-          done(err, user);
+// passport.use(new SpotifyStrategy ({
+//       authorizationURL: 'https://accounts.spotify.com/authorize',
+//       tokenURL: 'https://accounts.spotify.com/api/token',
+//       clientID: process.env.SPOTIFY_ID,
+//       clientSecret: process.env.SPOTIFY_SECRET,
+//       callbackURL: "/auth/spotify/callback",
+//       passReqToCallback: true
+//     },
+//     function(req, accessToken, refreshToken, profile, done) {
+//       User.findById(req.user._id, function(err, user) {
+//         user.tokens.push({ kind: 'spotify', accessToken: accessToken });
+//         user.save(function(err) {
+//           done(err, user);
+//         });
+//       });
+//     }
+// ));
+
+
+passport.use(new SpotifyStrategy({
+  authorizationURL: 'https://accounts.spotify.com/authorize',
+  tokenURL: 'https://accounts.spotify.com/api/token',
+  clientID: process.env.SPOTIFY_ID,
+  clientSecret: process.env.SPOTIFY_SECRET,
+  callbackURL: "/auth/spotify/callback",
+  passReqToCallback: true
+}, function(req, accessToken, refreshToken, profile, done) {
+  if (req.user) {
+    User.findOne({ spotify: profile.id }, function(err, existingUser) {
+      if (existingUser) {
+        req.flash('errors', { msg: 'There is already a Spotify account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, function(err, user) {
+          user.spotify = profile.id;
+          user.tokens.push({ kind: 'spotify', accessToken: accessToken });
+          user.save(function(err) {
+            req.flash('info', { msg: 'Spotify account has been linked.' });
+            done(err, user);
+          });
         });
+      }
+    });
+  } else {
+    User.findOne({ spotify: profile.id }, function(err, existingUser) {
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      User.findOne({ email: profile.emails[0].value }, function(err, existingEmailUser) {
+        if (existingEmailUser) {
+          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
+          done(err);
+        } else {
+          var user = new User();
+          user.email = profile.emails[0].value;
+          user.spotify = profile.id;
+          user.tokens.push({ kind: 'spotify', accessToken: accessToken });
+          user.save(function(err) {
+            done(err, user);
+          });
+        }
       });
-    }
-));
+    });
+  }
+}));
