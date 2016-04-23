@@ -35,6 +35,10 @@ var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var searchController = require('./controllers/search');
 
+var partyController = require('./controllers/party');
+
+var songController = require('./controllers/song');
+
 /**
  * API keys and Passport configuration.
  */
@@ -87,7 +91,7 @@ app.use(function(req, res, next) {
   if (req.path === '/api/upload') {
     next();
   } else {
-    lusca.csrf()(req, res, next);
+    lusca.csrf({angular: true})(req, res, next);
   }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
@@ -127,6 +131,34 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 app.get('/search', searchController.getSearch);
+
+app.post('/party', partyController.postParty);
+app.get('/party/:partyid', partyController.getParty);
+app.post('/party/:partyid/:songid', partyController.postSong);
+
+// // vote up
+// app.get('/party/:partyid/:songid/1', partyController.VUpSong);
+//
+// // vote down
+// app.get('/party/:partyid/:songid/-1', partyController.VDownSong);
+
+app.post('/api/party/:partyid/:songid/:vote', partyController.apiVoteSong);
+
+app.get('/api/party/:partyid', partyController.apiGetParty);
+
+app.get('/api/search', searchController.apiGetSearch);
+
+app.get('/api/song/:songid', songController.apiGetSong);
+
+
+// just added this as a test:
+/*
+app.get('/dowork',function(res,req){
+  console.log(req.params);
+  ///... code to do your work .../
+});
+*/
+
 /**
  * API examples routes.
  */
@@ -164,6 +196,9 @@ app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 app.get('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getPinterest);
 app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
 
+app.get('/api/spotify', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getSpotify);
+app.post('/api/spotify/', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postSpotifyPlaylist);
+
 /**
  * OAuth authentication routes. (Sign in)
  */
@@ -192,6 +227,23 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
   res.redirect(req.session.returnTo || '/');
 });
 
+app.get('/auth/spotify',
+    passport.authenticate('spotify', { scope: 'playlist-modify-private playlist-read-private playlist-modify'}),
+    function(req, res){
+      // The request will be redirected to spotify for authentication, so this
+      // function will not be called.
+    });
+app.get('/auth/spotify/callback',
+    passport.authenticate('spotify', { failureRedirect: '/api' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect(req.session.returnTo || '/api/spotify');
+    });
+
+// app.get('/auth/spotify', passport.authenticate('spotify'));
+// app.get('/auth/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/api' }), function(req, res) {
+//   res.redirect(req.session.returnTo || '/');
+// });
 /**
  * OAuth authorization routes. (API examples)
  */
