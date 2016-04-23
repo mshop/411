@@ -534,10 +534,13 @@ exports.isAuthorized = function(req, res, next) {
  * Spotify Login
  */
 
-passport.use(new SpotifyStrategy({
+passport.use('spotify', new OAuth2Strategy ({
+      authorizationURL: 'https://accounts.spotify.com/authorize',
+      tokenURL: 'https://accounts.spotify.com/api/token',
       clientID: process.env.SPOTIFY_ID,
       clientSecret: process.env.SPOTIFY_SECRET,
-      callbackURL: "/auth/spotify/callback"
+      callbackURL: "/auth/spotify/callback",
+      passReqToCallback: true
     },
     function(req, accessToken, refreshToken, profile, done) {
       User.findById(req.user._id, function(err, user) {

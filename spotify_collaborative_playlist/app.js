@@ -226,10 +226,18 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
   res.redirect(req.session.returnTo || '/');
 });
 
-app.get('/auth/spotify', passport.authenticate('spotify', { state: 'SOME STATE' }));
-app.get('/auth/spotify/callback', passport.authenticate('spotify', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
+app.get('/auth/spotify',
+    passport.authenticate('spotify'),
+    function(req, res){
+      // The request will be redirected to spotify for authentication, so this
+      // function will not be called.
+    });
+app.get('/auth/spotify/callback',
+    passport.authenticate('spotify', { failureRedirect: '/api' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect(req.session.returnTo || '/');
+    });
 /**
  * OAuth authorization routes. (API examples)
  */

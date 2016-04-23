@@ -926,3 +926,12 @@ exports.postPinterest = function(req, res, next) {
     res.redirect('/api/pinterest');
   });
 };
+
+exports.getSpotify = function(req, res) {
+  spotify = require('spotify')(process.env.SPOTIFY_SECRET);
+
+  res.render('api/stripe', {
+    title: 'Spotify TEST',
+    publishableKey: process.env.SPOTIFY_SECRET
+  });
+};
