@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 var app = angular.module('searchApp', []);
 
-app.controller('searchController', function($scope, $http) {
+app.controller('searchController', function($scope, $http, $location) {
     // get songs in queue
     $scope.getSongs = function() {
         $http.get('/api/search?query=' + $scope.query).success(function (data, status) {
@@ -33,6 +33,21 @@ app.controller('searchController', function($scope, $http) {
             });
         });
     };
+
+    $scope.loadQueue = function(partyid) {
+        $http.get('/api/party/' + partyid).success(function (data, status) {
+            $scope.partysongs = data;
+            console.log(data);
+        });
+    };
+
+    $scope.init = function () {
+        console.log($location.absUrl().split("/")[4]);
+        $scope.loadQueue($location.absUrl().split("/")[4]);
+    };
+
+    $scope.init();
+
 
     //**NOTE: Something is wrong here possibly; once you press a button to upvote/downvote, it keeps calling get to itself,
     // causing it to keep updating and saving the field (even if no one clicks on it afterward)!
