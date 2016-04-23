@@ -40,13 +40,13 @@ exports.postParty = function(req, res) {
 exports.getParty = function (req, res) {
 
   if (req.params.partyid == null) {
+    req.flash('errors', {msg: "party id too small"});
     res.redirect('/');
   }
   if (req.params.partyid.length == 24){
 
     Party.findOne({"_id": req.params.partyid}, function(err, party) {
       if (err) {
-        req.flash()
         res.render('party', {partyid: "Party Not Found"}) //--> this displays the search function: aka-- not good
         // it may just be a better idea to create a separate view that displays "party not found", then offers a button to go back to home page.
         //res.render("Party Not Found"); then -> res.redirect('/');
