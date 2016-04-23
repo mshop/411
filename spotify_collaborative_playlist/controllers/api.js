@@ -941,7 +941,7 @@ exports.getSpotify = function(req, res) {
       playlists: body.items
     });
 
-    console.log(body.items);
+    // console.log(body.items);
   });
 };
 
@@ -949,15 +949,17 @@ exports.postSpotifyPlaylist = function(req, res) {
   request = require('request');
 
   var token = _.find(req.user.tokens, { kind: 'spotify' });
-  var spotify_id = _.find(req.user.spotify);
+  var spotify_id = req.user.spotify;
   console.log(spotify_id);
-  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken, name: "TEST123" }, json: true }, function(err, request, body) {
+  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken}, body: {name: "TEST123", public: true}, json: true }, function(err, request, body) {
     if (err) {
       return next(err);
     }
 
+    console.log(body);
+
     req.flash('success', { msg: 'Playlist created' });
     res.redirect('/api/spotify');
-    
+
   });
 };

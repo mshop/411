@@ -228,7 +228,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 });
 
 app.get('/auth/spotify',
-    passport.authenticate('spotify', { scope: 'playlist-modify-private playlist-read-private'}),
+    passport.authenticate('spotify', { scope: 'playlist-modify-private playlist-read-private playlist-modify'}),
     function(req, res){
       // The request will be redirected to spotify for authentication, so this
       // function will not be called.
