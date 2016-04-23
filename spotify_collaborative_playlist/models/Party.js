@@ -10,7 +10,8 @@ var PartySchema = new mongoose.Schema({
         artists: String
     }],
     user_ids: Array,     // array of user id's that have joined the party
-    host_id: String
+    host_id: String,
+    qr_code: String
 
 });
 

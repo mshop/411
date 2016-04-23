@@ -13,13 +13,15 @@ exports.postParty = function(req, res) {
     result.song_ids = [];
     result.user_ids.push(req.user.tokens[0].accessToken);
     result.host_id = req.user.id;
+    result.qr_code = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:3000/party/" + result._id;
 
 
 
     result.save(function (err, result) {
       if (err) return console.error(err);
       console.log(result);
-      var url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + result._id;
+      // from http://goqr.me/api/
+      var url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:3000/party/" + result._id;
       console.log(url);
       //res.redirect('/');
       res.redirect('/party/' + result._id);
