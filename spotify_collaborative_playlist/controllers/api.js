@@ -951,7 +951,7 @@ exports.postSpotifyPlaylist = function(req, res) {
   var token = _.find(req.user.tokens, { kind: 'spotify' });
   var spotify_id = req.user.spotify;
   console.log(spotify_id);
-  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken}, body: {name: "TEST123", public: true}, json: true }, function(err, request, body) {
+  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken}, body: {name: req.body.playlist_name, public: true}, json: true }, function(err, request, body) {
     if (err) {
       return next(err);
     }
