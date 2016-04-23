@@ -197,6 +197,7 @@ app.get('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAutho
 app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postPinterest);
 
 app.get('/api/spotify', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getSpotify);
+app.post('/api/spotify/', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postSpotifyPlaylist);
 
 /**
  * OAuth authentication routes. (Sign in)
@@ -227,7 +228,7 @@ app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRe
 });
 
 app.get('/auth/spotify',
-    passport.authenticate('spotify'),
+    passport.authenticate('spotify', { scope: 'playlist-modify-private playlist-read-private'}),
     function(req, res){
       // The request will be redirected to spotify for authentication, so this
       // function will not be called.
@@ -236,7 +237,7 @@ app.get('/auth/spotify/callback',
     passport.authenticate('spotify', { failureRedirect: '/api' }),
     function(req, res) {
       // Successful authentication, redirect home.
-      res.redirect(req.session.returnTo || '/');
+      res.redirect(req.session.returnTo || '/api/spotify');
     });
 
 // app.get('/auth/spotify', passport.authenticate('spotify'));

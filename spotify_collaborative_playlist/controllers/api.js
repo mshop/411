@@ -928,8 +928,36 @@ exports.postPinterest = function(req, res, next) {
 };
 
 exports.getSpotify = function(req, res) {
+  request = require('request');
 
-  res.render('api/upload', {
-    title: 'SPOTIFY SUCCESS'
+  var token = _.find(req.user.tokens, { kind: 'spotify' });
+  request.get({ url: 'https://api.spotify.com/v1/me/playlists', qs: { access_token: token.accessToken }, json: true }, function(err, request, body) {
+    if (err) {
+      return next(err);
+    }
+
+    res.render('api/spotify', {
+      title: 'Spotify Playlists',
+      playlists: body.items
+    });
+
+    console.log(body.items);
+  });
+};
+
+exports.postSpotifyPlaylist = function(req, res) {
+  request = require('request');
+
+  var token = _.find(req.user.tokens, { kind: 'spotify' });
+  var spotify_id = _.find(req.user.spotify);
+  console.log(spotify_id);
+  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken, name: "TEST123" }, json: true }, function(err, request, body) {
+    if (err) {
+      return next(err);
+    }
+
+    req.flash('success', { msg: 'Playlist created' });
+    res.redirect('/api/spotify');
+    
   });
 };

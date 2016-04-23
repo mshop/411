@@ -570,6 +570,8 @@ passport.use(new SpotifyStrategy({
         User.findById(req.user.id, function(err, user) {
           user.spotify = profile.id;
           user.tokens.push({ kind: 'spotify', accessToken: accessToken });
+          user.tokens.push({ kind: 'spotify', refreshToken: refreshToken });
+          console.log(user.tokens);
           user.save(function(err) {
             req.flash('info', { msg: 'Spotify account has been linked.' });
             done(err, user);
