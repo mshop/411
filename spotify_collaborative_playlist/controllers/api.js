@@ -950,16 +950,47 @@ exports.postSpotifyPlaylist = function(req, res) {
 
   var token = _.find(req.user.tokens, { kind: 'spotify' });
   var spotify_id = req.user.spotify;
-  console.log(spotify_id);
-  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken}, body: {name: req.body.playlist_name, public: true}, json: true }, function(err, request, body) {
-    if (err) {
-      return next(err);
+
+
+  // Create a new playlist
+  request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists', qs: { access_token: token.accessToken}, body: {name: req.body.partyid, public: true}, json: true }, function(err1, req1, body1) {
+    if (err1) {
+      console.log(err1)
+      return next(err1);
     }
 
-    console.log(body);
+    // if we are successful in making a playlist, look up the songs in the party queue
+    request.get({url:'http://localhost:3000/api/party/' + req.body.partyid}, function(err2, req2, body2) {
+      if (err2) {
+        console.log(err2)
+        return next(err2);
+      }
 
-    req.flash('success', { msg: 'Playlist created' });
-    res.redirect('/api/spotify');
+      body2 = JSON.parse(body2);
+
+      // modify the format of the songs to get them be added to a spotify playlist
+      song_uris = [];
+      for (i = 0; i < body2.length; i++) {
+        song_uris.push('spotify:track:' + body2[i].songid);
+        if (i + 1 == body2.length) {
+
+          // for async issues, if we are at the last iteration, then send the post request
+          request.post({ url: 'https://api.spotify.com/v1/users/' + spotify_id + '/playlists/' + body1.id + "/tracks" , qs: { access_token: token.accessToken}, body: {"uris" : song_uris }, json: true }, function(err3, req3, body3) {
+            if (err3) {
+              console.log(err3)
+              return next(err3);
+            }
+
+
+            req.flash('success', {msg: 'Songs added to playlist'});
+            res.redirect('/party/' + req.body.partyid);
+          });
+
+        }
+      }
+
+
+    });
 
   });
 };

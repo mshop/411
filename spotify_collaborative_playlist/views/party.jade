@@ -3,14 +3,14 @@ extends layout
 block content
   .page-header
     h3 Party ID: #{ partyid }
-    form.form-horizontal(method='POST', action='/api/spotify')
-      input(type='hidden', name='_csrf', value=_csrf)
-      input(type='hidden', name='playlist_name', value=partyid)
-      button.btn.btn-primary(type='submit') Submit
 
   div.searchContainer(ng-app="searchApp")
 
     div.searchController(ng-controller="searchController")
+      form.form-horizontal(method='POST', action='/api/spotify')
+        input(type='hidden', name='_csrf', value=_csrf)
+        input(type='hidden', name='partyid', value=partyid)
+        button.btn.btn-primary(type='submit') Submit to spotify
       div.row
         div.col-md-6
           form.form-horizontal
